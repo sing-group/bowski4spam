@@ -7,7 +7,7 @@
 
 \.DS_Store
 .idea
-.iml
+*.iml
 
 output\.csv
 
