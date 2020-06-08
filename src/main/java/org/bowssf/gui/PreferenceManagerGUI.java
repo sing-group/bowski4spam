@@ -14,13 +14,13 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * This class is the interface for the treeFunctions
- *
  *
  * @author Alejandro Borrajo Viéitez
  */
@@ -42,6 +42,7 @@ public class PreferenceManagerGUI extends JFrame {
 
     /**
      * Gets the JPanel
+     *
      * @return the main JPanel
      */
     public JPanel getMainPanel() {
@@ -59,25 +60,27 @@ public class PreferenceManagerGUI extends JFrame {
 
     /**
      * For deploy the app
+     *
      * @throws JedisConnectionException if jedis is not connected
      */
-    public static void deploy() throws JedisConnectionException{
+    public static void deploy() throws JedisConnectionException {
         final JFrame frame = new JFrame("app");
-            PreferenceManagerGUI b = new PreferenceManagerGUI();
-            frame.setContentPane(b.mainPanel);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.setResizable(false);
-            frame.setSize(300, 150);
-            frame.setVisible(true);
+        PreferenceManagerGUI b = new PreferenceManagerGUI();
+        frame.setContentPane(b.mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setResizable(false);
+        frame.setSize(300, 150);
+        frame.setVisible(true);
     }
 
 
     /**
      * Constructs the tree in the Jframe
-     * @param root the parent of the node
-     * @param rootTree the entire tree
-     * @param levels the level desired to construct
+     *
+     * @param root      the parent of the node
+     * @param rootTree  the entire tree
+     * @param levels    the level desired to construct
      * @param childTrue the boolean if the parent is checked
      */
     private void getSynsets(String root, DefaultMutableTreeNode rootTree, int levels, boolean childTrue) {
@@ -93,7 +96,7 @@ public class PreferenceManagerGUI extends JFrame {
             Set<String> synsets = jedisSynsetCache.getChildNodes(root);
 
             for (String synset : synsets) {
-                getSynsets(synset, synsetTree, levels - 1,childTrue);
+                getSynsets(synset, synsetTree, levels - 1, childTrue);
             }
         }
     }
@@ -119,7 +122,7 @@ public class PreferenceManagerGUI extends JFrame {
         preload();
         root = new DefaultMutableTreeNode("Root");
         String startSynset = jedisSynsetCache.START_SYNSET;
-        this.getSynsets(startSynset, root, iniConfig.getPreloadingLevels(),false);
+        this.getSynsets(startSynset, root, iniConfig.getPreloadingLevels(), false);
 
         treeModel = new DefaultTreeModel(root);
         tree = new JTree(treeModel);
@@ -144,6 +147,7 @@ public class PreferenceManagerGUI extends JFrame {
         treeModel.addTreeModelListener(new TreeListener());
         jscroll = new JScrollPane(tree);
     }
+
 }
 
 

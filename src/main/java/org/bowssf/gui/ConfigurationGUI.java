@@ -1,5 +1,7 @@
 package org.bowssf.gui;
 
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import it.uniroma1.lcl.jlt.util.Language;
 import org.bowssf.gui.actions.BackActionListener;
 import org.bowssf.gui.actions.ClearActionListener;
@@ -11,12 +13,11 @@ import javax.swing.*;
 /**
  * This class is the interface for the configuration
  *
- *
  * @author Alejandro Borrajo Viéitez
  */
-public class ConfigurationGUI extends JFrame{
+public class ConfigurationGUI extends JFrame {
 
-    private final String ICON_PATH = "src/main/resources/icons/";
+
     private final static IniConfig iniConfig = IniConfig.getInstance();
     private JPanel mainpanel;
     private JTextField levelsJField;
@@ -32,6 +33,7 @@ public class ConfigurationGUI extends JFrame{
 
     /**
      * Gets the other framework
+     *
      * @return return the other framework
      */
     public PreferenceManagerGUI getPreferenceManager() {
@@ -40,6 +42,7 @@ public class ConfigurationGUI extends JFrame{
 
     /**
      * Gets the level field
+     *
      * @return the field
      */
     public JTextField getLevelsJField() {
@@ -48,6 +51,7 @@ public class ConfigurationGUI extends JFrame{
 
     /**
      * Gets a radioButton
+     *
      * @return a radio button for babelnet force
      */
     public JRadioButton getForceBabelnetRadioButton() {
@@ -56,6 +60,7 @@ public class ConfigurationGUI extends JFrame{
 
     /**
      * Gets a radioButtom
+     *
      * @return a radio button for jedis force
      */
     public JRadioButton getForceJedisRadioButton() {
@@ -64,6 +69,7 @@ public class ConfigurationGUI extends JFrame{
 
     /**
      * Gets a combobox
+     *
      * @return a combobox for language
      */
     public JComboBox getLanguageCombobox() {
@@ -72,23 +78,27 @@ public class ConfigurationGUI extends JFrame{
 
     /**
      * Constructor of the class
+     *
      * @param preferenceManager the other frame
      */
-    public ConfigurationGUI(PreferenceManagerGUI preferenceManager){
+    public ConfigurationGUI(PreferenceManagerGUI preferenceManager) {
         this.preferenceManager = preferenceManager;
-        backButton.addActionListener(new BackActionListener(mainpanel));
-        saveButton.addActionListener(new SaveConfigurationActionListener(this));
 
-        levelsJField.setText(Integer.toString(iniConfig.getPreloadingLevels()));
-        forceJedisRadioButton.setSelected(iniConfig.isForceJedis());
-        forceBabelnetRadioButton.setSelected(iniConfig.isForceBabelNet());
         bgroup = new ButtonGroup();
         bgroup.add(forceJedisRadioButton);
         bgroup.add(forceBabelnetRadioButton);
         int select = 0;
-        if(iniConfig.getLanguage() == Language.ES){
+        if (iniConfig.getLanguage() == Language.ES) {
             select = 1;
         }
+
+        levelsJField.setText(Integer.toString(iniConfig.getPreloadingLevels()));
+        forceJedisRadioButton.setSelected(iniConfig.isForceJedis());
+        forceBabelnetRadioButton.setSelected(iniConfig.isForceBabelNet());
+
+
+        backButton.addActionListener(new BackActionListener(mainpanel));
+        saveButton.addActionListener(new SaveConfigurationActionListener(this));
         languageCombobox.setSelectedIndex(select);
 
         clearSelection.addActionListener(new ClearActionListener(this.bgroup));
@@ -96,6 +106,7 @@ public class ConfigurationGUI extends JFrame{
 
     /**
      * Gets a JPanel
+     *
      * @return the mainpanel
      */
     public JPanel getMainpanel() {

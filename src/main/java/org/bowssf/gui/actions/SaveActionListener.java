@@ -23,7 +23,7 @@ public class SaveActionListener implements ActionListener {
      * @param root the node of the tree
      */
     public SaveActionListener(TreeNode root) {
-        this.root = (DefaultMutableTreeNode) ((DefaultMutableTreeNode) root).getFirstChild();
+        this.root = (DefaultMutableTreeNode) root;
     }
 
     /**
@@ -32,7 +32,7 @@ public class SaveActionListener implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        Map<String, List<String>> interestMap = TreeUtils.getInterest(this.root);
+        Map<String, List<String>> interestMap = TreeUtils.getInterest((DefaultMutableTreeNode)this.root.getFirstChild());
         JsonUtils.save(interestMap);
 
     }
