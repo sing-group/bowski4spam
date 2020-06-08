@@ -61,5 +61,4 @@ trec2007/
 *.ser
 config/config.ini
 lib/
-src/main/resources/
-src/test/
+
