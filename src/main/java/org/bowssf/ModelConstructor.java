@@ -46,7 +46,7 @@ public class ModelConstructor extends SpamDtector {
                 wordsCount.forEach((key, pair) -> {
                     stadistics.put(key, calculate(pair));
                 });
-                JsonUtils.save(stadistics, "prueba.json");
+                JsonUtils.save(stadistics, "modelData.json");
 
 
             }catch (JedisConnectionException je){

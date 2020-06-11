@@ -8,6 +8,8 @@ import org.bowssf.gui.actions.ClearActionListener;
 import org.bowssf.gui.actions.SaveConfigurationActionListener;
 import org.bowssf.util.IniConfig;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -97,10 +99,10 @@ public class ConfigurationGUI extends JFrame {
         forceBabelnetRadioButton.setSelected(iniConfig.isForceBabelNet());
 
 
-        backButton.addActionListener(new BackActionListener(mainpanel));
-        saveButton.addActionListener(new SaveConfigurationActionListener(this));
         languageCombobox.setSelectedIndex(select);
 
+        saveButton.addActionListener(new SaveConfigurationActionListener(this));
+        backButton.addActionListener(new BackActionListener(mainpanel));
         clearSelection.addActionListener(new ClearActionListener(this.bgroup));
     }
 

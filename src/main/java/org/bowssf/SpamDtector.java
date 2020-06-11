@@ -10,13 +10,14 @@ import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Stream;
 
 public class SpamDtector {
     public static void main(String[] args) {
 
-
+    try {
         Options options = new Options();
         Option input = new Option("d", "directory", true, "directory file path");
         input.setRequired(false);
@@ -38,26 +39,26 @@ public class SpamDtector {
 
         try {
             cmd = parser.parse(options, args);
-            directory =cmd.getOptionValue("directory");
+            directory = cmd.getOptionValue("directory");
             directoyOption = cmd.getOptionValue("directory") != null;
-            if (cmd.hasOption("help")){
-                formatter.printHelp("utility-name",options);
+            if (cmd.hasOption("help")) {
+                formatter.printHelp("utility-name", options);
                 System.exit(1);
             }
-            if( !directoyOption && cmd.getArgs().length != 1){
+            if (!directoyOption && cmd.getArgs().length != 1) {
                 throw new MissingArgumentException("Falta un fichero");
             }
             File file = null;
-            if(directoyOption){
-                if(cmd.getArgs().length != 0) throw new IOException("No se admiten tanto argumentos");
+            if (directoyOption) {
+                if (cmd.getArgs().length != 0) throw new IOException("No se admiten tanto argumentos");
                 file = new File(directory);
                 if (!file.isDirectory()) throw new IOException(directory + " no es un directorio");
-            }else{
-               file = new File(cmd.getArgs()[0]);
-                if(!file.isFile()) throw new IOException(cmd.getArgs()[0] +" no es un fichero");
+            } else {
+                file = new File(cmd.getArgs()[0]);
+                if (!file.isFile()) throw new IOException(cmd.getArgs()[0] + " no es un fichero");
             }
 
-        } catch (MissingArgumentException | IOException e){
+        } catch (MissingArgumentException | IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);
         } catch (ParseException e) {
@@ -66,11 +67,15 @@ public class SpamDtector {
             System.exit(1);
 
         }
-        Map<String,Double> map = JsonUtils.read("prueba.json");
+        Map<String, Double> map = JsonUtils.read("ModelData.json");
+        if(map.isEmpty()){
+            System.out.println("Error leyendo las probabilidades del modelo");
+            System.exit(1);
+        }
 
         List<String> files = new ArrayList<>();
-        if(!directoyOption) files.add(cmd.getArgs()[0]);
-        else{
+        if (!directoyOption) files.add(cmd.getArgs()[0]);
+        else {
             try (Stream<Path> paths = Files.walk(Paths.get(directory))) {
                 paths
                         .filter(Files::isRegularFile)
@@ -102,21 +107,21 @@ public class SpamDtector {
             double numerador;
             final double cspam = 0.5;
             double productorioNum = 1.0;
-            List <String> keys = new ArrayList<>(map.keySet());
+            List<String> keys = new ArrayList<>(map.keySet());
 
             //numerador
-            for (int i = 0; i< keys.size();i++){
+            for (int i = 0; i < keys.size(); i++) {
 
                 boolean isContained = mensaje.contains(keys.get(i));
-                if(!isContained)
+                if (!isContained)
                     continue;
 
-                double dContained = isContained?1.0:0.0;
+                double dContained = isContained ? 1.0 : 0.0;
                 double value = map.get(keys.get(i));
 
 
-                double probSpam = Math.pow(1-value,dContained);
-                double probHam = Math.pow(value,1-dContained);
+                double probSpam = Math.pow(1 - value, dContained);
+                double probHam = Math.pow(value, 1 - dContained);
                 productorioNum *= probSpam * probHam;
 
 
@@ -129,32 +134,32 @@ public class SpamDtector {
             double denom;
 
             //productorio ch
-            for (int i = 0; i< keys.size();i++){
+            for (int i = 0; i < keys.size(); i++) {
                 boolean isContained = mensaje.contains(keys.get(i));
-                if(!isContained)
+                if (!isContained)
                     continue;
-                double dContained = isContained?1.0:0.0;
+                double dContained = isContained ? 1.0 : 0.0;
                 double value = map.get(keys.get(i));
-                double probHam = Math.pow(value,dContained);
-                double probSpam = Math.pow(1-value,1-dContained);
+                double probHam = Math.pow(value, dContained);
+                double probSpam = Math.pow(1 - value, 1 - dContained);
 
-                productorioCHDe *= probHam *probSpam;
+                productorioCHDe *= probHam * probSpam;
 
             }
-            productorioCHDe *= 1-cspam;
+            productorioCHDe *= 1 - cspam;
 
             denom = productorioCHDe + numerador;
 
-            double result = numerador/denom;
+            double result = numerador / denom;
 
             StringBuilder out = new StringBuilder();
             out.append("Fichero: ").append(pathFile);
-            if(cmd.hasOption("stadistic")){
+            if (cmd.hasOption("stadistic")) {
                 out.append(" Probabilidad: ").append(result);
             }
-            if(result >= 0.5){
+            if (result >= 0.5) {
                 out.append(" Spam");
-            }else{
+            } else {
                 out.append(" Ham");
             }
 
@@ -164,7 +169,9 @@ public class SpamDtector {
         }
 
 
-
+    }catch (Exception e){
+        System.exit(1);
+    }
 
 
 

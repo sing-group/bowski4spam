@@ -14,7 +14,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +52,7 @@ public class PreferenceManagerGUI extends JFrame {
      * Constructor fot the class
      */
     public PreferenceManagerGUI() {
-        saveButton.addActionListener(new SaveActionListener(root.getFirstChild()));
+        saveButton.addActionListener(new SaveActionListener(root));
         search.addActionListener(new SearchActionListener(searchInput, root.getFirstChild(), tree));
         conf.addActionListener(new ConfigurationActionListener(this));
     }
@@ -113,12 +112,15 @@ public class PreferenceManagerGUI extends JFrame {
         jedisSynsetCache.setForceJedis(iniConfig.isForceJedis());
         interest = JsonUtils.read(file);
 
+
     }
 
     /**
      * For intellij purpose
      */
     private void createUIComponents() {
+
+
         preload();
         root = new DefaultMutableTreeNode("Root");
         String startSynset = jedisSynsetCache.START_SYNSET;
