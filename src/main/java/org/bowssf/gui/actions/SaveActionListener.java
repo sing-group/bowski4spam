@@ -33,9 +33,7 @@ public class SaveActionListener implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(this.root.getFirstChild());
         Map<String, List<String>> interestMap = TreeUtils.getInterest((DefaultMutableTreeNode)this.root.getFirstChild());
-        System.out.println(interestMap);
         JsonUtils.save(interestMap);
 
     }

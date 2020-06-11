@@ -14,6 +14,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,6 +53,8 @@ public class PreferenceManagerGUI extends JFrame {
      * Constructor fot the class
      */
     public PreferenceManagerGUI() {
+
+
         saveButton.addActionListener(new SaveActionListener(root));
         search.addActionListener(new SearchActionListener(searchInput, root.getFirstChild(), tree));
         conf.addActionListener(new ConfigurationActionListener(this));
@@ -64,12 +67,12 @@ public class PreferenceManagerGUI extends JFrame {
      */
     public static void deploy() throws JedisConnectionException {
         final JFrame frame = new JFrame("app");
-        PreferenceManagerGUI b = new PreferenceManagerGUI();
-        frame.setContentPane(b.mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setResizable(false);
         frame.setSize(300, 150);
+        PreferenceManagerGUI b = new PreferenceManagerGUI();
+        frame.setContentPane(b.mainPanel);
         frame.setVisible(true);
     }
 
@@ -148,7 +151,15 @@ public class PreferenceManagerGUI extends JFrame {
         // listen for changes in the model (including check box toggles)
         treeModel.addTreeModelListener(new TreeListener());
         jscroll = new JScrollPane(tree);
+
+        saveButton = new JButton();
+        saveButton.setBackground(new Color(-15000805));
+        saveButton.setHideActionText(true);
+        saveButton.setIcon(new ImageIcon(getClass().getResource("/icons/save.png")));
+        saveButton.setText("");
+        saveButton.addActionListener(new SaveActionListener(root));
     }
+
 
 }
 
