@@ -39,6 +39,7 @@ public class SearchActionListener implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+
         DefaultMutableTreeNode node = TreeUtils.find(root,Jfield.getText());
         if(node!=null) {
             TreePath path = new TreePath(node.getPath());
