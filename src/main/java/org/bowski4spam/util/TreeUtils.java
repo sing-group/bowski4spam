@@ -36,9 +36,12 @@ public class TreeUtils {
                 anyChanged = true;
             }
         }
-        Iterator<TreeNode> childIterator = node.children().asIterator();
-        while (childIterator.hasNext()) {
-            DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.next();
+        //Iterator<TreeNode> childIterator = node.children().asIterator();
+        Enumeration<TreeNode> childIterator = node.children();
+        //while (childIterator.hasMore()) {
+        while (childIterator.hasMoreElements()) {
+            //DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.next();
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.nextElement();
             final boolean changed = toggleDown(child, checked);
             if (changed) anyChanged = true;
         }
@@ -73,11 +76,14 @@ public class TreeUtils {
      */
     public static boolean toggleUpTrue(final DefaultMutableTreeNode node) {
 
-        Iterator<TreeNode> childs = node.children().asIterator();
+        //Iterator<TreeNode> childs = node.children().asIterator();
+        Enumeration <TreeNode> childs = node.children();
         boolean stop = false;
         boolean anyChanged = false;
-        while (childs.hasNext() && !stop) {
-            if (!Objects.requireNonNull(TreeUtils.getData((DefaultMutableTreeNode) childs.next())).isChecked()) {
+        while (childs.hasMoreElements() && !stop) {
+        //while (childs.hasNext() && !stop) {
+            //if (!Objects.requireNonNull(TreeUtils.getData((DefaultMutableTreeNode) childs.next())).isChecked()) {
+            if (!Objects.requireNonNull(TreeUtils.getData((DefaultMutableTreeNode) childs.nextElement())).isChecked()) {
                 stop = true;
             }
         }
@@ -124,9 +130,13 @@ public class TreeUtils {
             }
             interestMap.put("interested", interested);
             interestMap.put("notInterested", notInterested);
-            Iterator<TreeNode> childIterator = node.children().asIterator();
-            while (childIterator.hasNext()) {
-                DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.next();
+
+            //Iterator<TreeNode> childIterator = node.children().asIterator();
+            Enumeration<TreeNode> childIterator = node.children();
+            //while (childIterator.hasNext()) {
+            while (childIterator.hasMoreElements()) {
+                //DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.next();
+                DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.nextElement();
                 Map<String, List<String>> nextInterestMap = getInterest(child);
                 interestMap.get("interested").addAll(nextInterestMap.get("interested"));
                 interestMap.get("notInterested").addAll(nextInterestMap.get("notInterested"));
@@ -165,9 +175,12 @@ public class TreeUtils {
         if (text.split("\\|")[0].contains(toSearch)) {
             return root;
         }
-        Iterator<TreeNode> childIterator = root.children().asIterator();
-        while (childIterator.hasNext()) {
-            DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.next();
+        //Iterator<TreeNode> childIterator = root.children().asIterator();
+        Enumeration<TreeNode> childIterator = root.children();
+        while (childIterator.hasMoreElements()) {
+        //while (childIterator.hasNext()) {
+            //DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.next();
+            DefaultMutableTreeNode child = (DefaultMutableTreeNode) childIterator.nextElement();
             node = find(child, toSearch);
             if (node != null) {
                 return node;
